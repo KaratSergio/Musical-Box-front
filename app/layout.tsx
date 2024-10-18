@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import Navbar from "./components/Navbar";
+import Navbar from "../shared/ui/Navbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
