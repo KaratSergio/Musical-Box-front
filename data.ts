@@ -1,4 +1,4 @@
-import { ISong } from "./entities/song/model/types";
+import { ISong } from "./entities/songs/model/types";
 
 const songs: ISong[] = [
   {

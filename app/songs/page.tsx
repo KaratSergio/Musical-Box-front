@@ -1,4 +1,4 @@
-import SongList from "@/entities/song/ui/SongList";
+import SongList from "@/entities/songs/ui/SongList";
 import songs from "@/data";
 
 export default function SongsPage() {

@@ -1,4 +1,4 @@
-import { ISong } from "../../song/model/types";
+import { ISong } from "../../songs/model/types";
 
 export interface IAlbum {
   _id: string;
