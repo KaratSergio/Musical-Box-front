@@ -1,8 +1,4 @@
-export interface IComment {
-  _id: string;
-  username: string;
-  text: string;
-}
+import { IComment } from "../../comments/model/types";
 
 export interface ISong {
   _id: string;

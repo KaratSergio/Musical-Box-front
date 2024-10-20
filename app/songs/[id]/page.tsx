@@ -4,8 +4,8 @@ import songs from "../../../data";
 import { Typography, Box } from "@mui/material";
 import { useState } from "react";
 import SongDetails from "../../../entities/songs/ui/SongDetails";
-import CommentList from "../../../entities/songs/ui/CommentList";
-import CommentForm from "../../../entities/songs/ui/CommentForm";
+import CommentList from "../../../entities/comments/ui/CommentList";
+import CommentForm from "../../../entities/comments/ui/CommentForm";
 
 const SongDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
