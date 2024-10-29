@@ -8,7 +8,7 @@ export const initialPlayerState: PlayerState = {
   volume: 50,
 };
 
-export const playerReducer = (state = initialPlayerState, action: PlayerAction) => {
+export const playerReducer = (state: PlayerState = initialPlayerState, action: PlayerAction): PlayerState => {
   switch (action.type) {
     case PlayerActionTypes.PLAY:
       return { ...state, pause: false };

@@ -1,5 +1,5 @@
-import SongList from "@/entities/songs/ui/SongList";
-import songs from "@/data";
+import SongList from '@/entities/songs/ui/SongList';
+import songs from '@/data';
 
 export default function SongsPage() {
   return (
