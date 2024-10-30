@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { IconButton, CardContent, Typography } from '@mui/material';
 import { Pause, PlayArrow, VolumeDownRounded, VolumeUp, VolumeOff } from '@mui/icons-material';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -17,9 +17,8 @@ const Player: React.FC<PlayerProps> = ({ song }) => {
   const { isPaused, volume, currentTime, duration } = useAppSelector(selectAllPlayer);
   const { playSong, pauseSong, setVolumeSong, setCurrentTimeSong, setDurationSong } = usePlayerActions();
 
-  useEffect(() => {
-    if (!audio) {
-      audio = new Audio(song.audio);
+  const initializeAudio = useCallback(() => {
+    if (audio) {
       audio.volume = volume / 100;
       audio.onloadedmetadata = () => {
         if (audio?.duration !== undefined) setDurationSong(Math.ceil(audio.duration));
@@ -28,11 +27,16 @@ const Player: React.FC<PlayerProps> = ({ song }) => {
         if (audio?.currentTime !== undefined) setCurrentTimeSong(Math.ceil(audio.currentTime));
       };
     }
-  }, [song.audio, setCurrentTimeSong, setDurationSong, volume]);
+  }, [volume, setDurationSong, setCurrentTimeSong]);
 
   useEffect(() => {
-    if (audio) audio.volume = volume / 100;
-  }, [volume]);
+    if (!audio) {
+      audio = new Audio(song.audio);
+      initializeAudio();
+    } else {
+      audio.volume = volume / 100;
+    }
+  }, [song.audio, volume, initializeAudio]);
 
   const togglePlay = () => {
     if (isPaused) {
@@ -48,27 +52,33 @@ const Player: React.FC<PlayerProps> = ({ song }) => {
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => setCurrentTimeSong(Number(e.target.value));
 
   return (
-    <div className="flex fixed bottom-0 items-center p-4 h-16 w-[900px] bg-gray-400">
-      <IconButton onClick={togglePlay}>{isPaused ? <PlayArrow /> : <Pause />}</IconButton>
-      <CardContent>
-        <Typography component="div" variant="h5">
+    <div className="flex fixed bottom-0 items-center p-4 h-16 w-full bg-gray-400">
+      <IconButton onClick={togglePlay} className="text-white mr-2">
+        {isPaused ? <PlayArrow /> : <Pause />}
+      </IconButton>
+      <CardContent className="flex flex-col">
+        <Typography component="div" variant="h5" className="text-lg font-semibold">
           {song.title}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Typography variant="subtitle1" className="text-gray-200 text-sm">
           {song.artist}
         </Typography>
       </CardContent>
-      <SongProgress left={currentTime} right={duration} onChange={changeCurrentTime} />
-
-      {volume === 0 ? (
-        <VolumeOff className="ml-auto" />
-      ) : volume < 50 ? (
-        <VolumeDownRounded className="ml-auto" />
-      ) : (
-        <VolumeUp className="ml-auto" />
-      )}
-
-      <SongProgress left={volume} right={100} onChange={(e) => changeVolume(e)} />
+      <div className="flex-grow px-4">
+        <SongProgress left={currentTime} right={duration} onChange={changeCurrentTime} />
+      </div>
+      <div className="flex items-center ml-auto mr-4">
+        {volume === 0 ? (
+          <VolumeOff className="text-white" />
+        ) : volume < 50 ? (
+          <VolumeDownRounded className="text-white" />
+        ) : (
+          <VolumeUp className="text-white" />
+        )}
+      </div>
+      <div className="w-1/4">
+        <SongProgress left={volume} right={100} onChange={changeVolume} />
+      </div>
     </div>
   );
 };
