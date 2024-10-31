@@ -28,11 +28,11 @@ const SongDetailPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div>
-      <Box sx={{ padding: 4 }}>
+      <Box className="p-1">
         <SongDetails song={song} />
         <CommentList comments={comments} />
         <CommentForm onCommentSubmit={handleCommentSubmit} />
-        <Player play={() => {}} song={song} />
+        <Player song={song} />
       </Box>
     </div>
   );

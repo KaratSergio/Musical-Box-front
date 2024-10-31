@@ -1,33 +1,30 @@
-"use client";
+'use client';
 
-import SongItem from "./SongItem";
-import { ISong } from "../model/types";
-import { Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { ISong } from '../model/types';
+import { Box, Typography } from '@mui/material';
+import SongItem from './SongItem';
 
-interface TrackListProps {
+interface SongListProps {
   songs: ISong[];
+  onSongSelect: (song: ISong) => void;
 }
 
-const SongList: React.FC<TrackListProps> = ({ songs }) => {
+const SongList: React.FC<SongListProps> = ({ songs, onSongSelect }) => {
   const [activeSongId, setActiveSongId] = useState<string | null>(null);
 
-  const play = (id: string) => {
-    setActiveSongId(id === activeSongId ? null : id);
+  const play = (song: ISong) => {
+    setActiveSongId(song._id);
+    onSongSelect(song);
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+    <Box className="p-4">
+      <Typography variant="h4" className="mb-4">
         Songs
       </Typography>
       {songs.map((song) => (
-        <SongItem
-          key={song._id}
-          song={song}
-          play={() => play(song._id)}
-          active={activeSongId === song._id}
-        />
+        <SongItem key={song._id} song={song} play={() => play(song)} active={activeSongId === song._id} />
       ))}
     </Box>
   );
