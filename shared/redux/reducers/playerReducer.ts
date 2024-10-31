@@ -1,4 +1,4 @@
-import { PlayerAction, PlayerActionTypes, PlayerState } from '../types';
+import { PlayerAction, PlayerActionTypes, PlayerState } from '../types/playerTypes';
 
 export const initialPlayerState: PlayerState = {
   active: null,

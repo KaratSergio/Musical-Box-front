@@ -1,4 +1,4 @@
-import { PlayerActionTypes, PlayerAction } from '../types';
+import { PlayerActionTypes, PlayerAction } from '../types/playerTypes';
 import { ISong } from '../../../entities/songs/model/types';
 
 export const playSong = (): PlayerAction => ({ type: PlayerActionTypes.PLAY });
