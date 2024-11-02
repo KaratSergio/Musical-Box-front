@@ -12,9 +12,9 @@ export const fetchAllSongs = createAsyncThunk('songs/fetchAll', async (_, { reje
   }
 });
 
-export const fetchSongById = createAsyncThunk('songs/fetchById', async (id: string, { rejectWithValue }) => {
+export const fetchSongById = createAsyncThunk('songs/fetchById', async (_id: string, { rejectWithValue }) => {
   try {
-    const song = await getSong(id);
+    const song = await getSong(_id);
     return song;
   } catch (e) {
     console.error(e);

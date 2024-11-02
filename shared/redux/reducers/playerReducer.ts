@@ -1,4 +1,13 @@
-import { PlayerAction, PlayerActionTypes, PlayerState } from '../types/playerTypes';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ISong } from '@/entities/songs/model/types';
+
+interface PlayerState {
+  active: ISong | null;
+  volume: number;
+  duration: number;
+  currentTime: number;
+  pause: boolean;
+}
 
 export const initialPlayerState: PlayerState = {
   active: null,
@@ -8,21 +17,31 @@ export const initialPlayerState: PlayerState = {
   volume: 50,
 };
 
-export const playerReducer = (state: PlayerState = initialPlayerState, action: PlayerAction): PlayerState => {
-  switch (action.type) {
-    case PlayerActionTypes.PLAY:
-      return { ...state, pause: false };
-    case PlayerActionTypes.PAUSE:
-      return { ...state, pause: true };
-    case PlayerActionTypes.SET_ACTIVE:
-      return { ...state, active: action.payload };
-    case PlayerActionTypes.SET_DURATION:
-      return { ...state, duration: action.payload };
-    case PlayerActionTypes.SET_CURRENT_TIME:
-      return { ...state, currentTime: action.payload };
-    case PlayerActionTypes.SET_VOLUME:
-      return { ...state, volume: action.payload };
-    default:
-      return state;
-  }
-};
+const playerSlice = createSlice({
+  name: 'player',
+  initialState: initialPlayerState,
+  reducers: {
+    play(state: PlayerState) {
+      state.pause = false;
+    },
+    pause(state: PlayerState) {
+      state.pause = true;
+    },
+    setActive(state: PlayerState, action: PayloadAction<ISong>) {
+      state.active = action.payload;
+    },
+    setDuration(state: PlayerState, action: PayloadAction<number>) {
+      state.duration = action.payload;
+    },
+    setCurrentTime(state: PlayerState, action: PayloadAction<number>) {
+      state.currentTime = action.payload;
+    },
+    setVolume(state: PlayerState, action: PayloadAction<number>) {
+      state.volume = action.payload;
+    },
+  },
+});
+
+export const { play, pause, setActive, setDuration, setCurrentTime, setVolume } = playerSlice.actions;
+
+export default playerSlice.reducer;

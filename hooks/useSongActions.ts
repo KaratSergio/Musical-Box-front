@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
-import { bindActionCreators } from 'redux';
 import { useAppDispatch } from './useAppDispatch';
-import * as SongActions from '../shared/redux/actions/songActions';
-import * as SongThunks from '../shared/lib/songThunks'
+import { fetchAllSongs, fetchSongById, addSong } from '../shared/lib/songThunks';
+import { ISong } from '@/entities/songs/model/types';
 
 export const useSongActions = () => {
   const dispatch = useAppDispatch();
 
   return useMemo(
     () => ({
-      ...bindActionCreators(SongActions, dispatch),
-      ...bindActionCreators(SongThunks, dispatch),
+      fetchAllSongs: () => dispatch(fetchAllSongs()),
+      fetchSongById: (id: string) => dispatch(fetchSongById(id)),
+      addSong: (songData: ISong) => dispatch(addSong(songData)),
     }),
     [dispatch]
   );

@@ -1,17 +1,63 @@
-import { SongAction, SongActionTypes, SongState } from '../types/songTypes';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ISong } from '@/entities/songs/model/types';
+import { fetchAllSongs, fetchSongById, addSong } from '../../lib/songThunks';
+
+interface SongState {
+  songs: ISong[];
+  error: string | null;
+  loading: boolean;
+}
 
 export const initialSongsState: SongState = {
   songs: [],
-  error: '',
+  error: null,
+  loading: false,
 };
 
-export const songReducer = (state: SongState = initialSongsState, action: SongAction): SongState => {
-  switch (action.type) {
-    case SongActionTypes.FETCH_SONGS:
-      return { error: '', songs: action.payload };
-    case SongActionTypes.FETCH_SONGS_ERROR:
-      return { ...state, error: action.payload };
-    default:
-      return state;
-  }
+const songSlice = createSlice({
+  name: 'songs',
+  initialState: initialSongsState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAllSongs.pending, startLoading)
+      .addCase(fetchAllSongs.fulfilled, (state, action: PayloadAction<ISong[]>) => {
+        state.songs = action.payload;
+        stopLoading(state);
+      })
+      .addCase(fetchAllSongs.rejected, (state, action) => {
+        stopLoading(state);
+        setError(state, action.payload);
+      })
+      .addCase(fetchSongById.pending, startLoading)
+      .addCase(fetchSongById.fulfilled, (state, action: PayloadAction<ISong>) => {
+        state.songs.push(action.payload);
+        stopLoading(state);
+      })
+      .addCase(fetchSongById.rejected, (state, action) => {
+        stopLoading(state);
+        setError(state, action.payload);
+      })
+      .addCase(addSong.pending, startLoading)
+      .addCase(addSong.fulfilled, stopLoading)
+      .addCase(addSong.rejected, (state, action) => {
+        stopLoading(state);
+        setError(state, action.payload);
+      });
+  },
+});
+
+const startLoading = (state: SongState) => {
+  state.loading = true;
+  state.error = null;
 };
+
+const stopLoading = (state: SongState) => {
+  state.loading = false;
+};
+
+const setError = (state: SongState, payload: unknown) => {
+  state.error = payload as string | null;
+};
+
+export default songSlice.reducer;
