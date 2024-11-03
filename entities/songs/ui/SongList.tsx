@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ISong } from '../model/types';
 import { Box, Typography } from '@mui/material';
+import Link from 'next/link';
 import SongItem from './SongItem';
 
 interface SongListProps {
@@ -24,7 +25,9 @@ const SongList: React.FC<SongListProps> = ({ songs, onSongSelect }) => {
         Songs
       </Typography>
       {songs.map((song) => (
-        <SongItem key={song._id} song={song} play={() => play(song)} active={activeSongId === song._id} />
+        <Link key={song._id} href={`/songs/${song._id}`} passHref>
+          <SongItem song={song} play={() => play(song)} active={activeSongId === song._id} />
+        </Link>
       ))}
     </Box>
   );

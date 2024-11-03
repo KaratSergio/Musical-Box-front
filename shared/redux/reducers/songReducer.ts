@@ -4,12 +4,14 @@ import { fetchAllSongs, fetchSongById, addSong } from '../../lib/songThunks';
 
 interface SongState {
   songs: ISong[];
+  selectedSong: ISong | null;
   error: string | null;
   loading: boolean;
 }
 
 export const initialSongsState: SongState = {
   songs: [],
+  selectedSong: null,
   error: null,
   loading: false,
 };
@@ -31,7 +33,7 @@ const songSlice = createSlice({
       })
       .addCase(fetchSongById.pending, startLoading)
       .addCase(fetchSongById.fulfilled, (state, action: PayloadAction<ISong>) => {
-        state.songs.push(action.payload);
+        state.selectedSong = action.payload;
         stopLoading(state);
       })
       .addCase(fetchSongById.rejected, (state, action) => {

@@ -1,17 +1,29 @@
 'use client';
 
-import songs from '../../../data';
-import { Typography, Box } from '@mui/material';
-import { useState } from 'react';
-import SongDetails from '../../../entities/songs/ui/SongDetails';
-import CommentList from '../../../entities/comments/ui/CommentList';
-import CommentForm from '../../../entities/comments/ui/CommentForm';
+import { Typography, Box, CircularProgress } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { fetchSongById } from '@/shared/lib/songThunks';
+import SongDetails from '@/entities/songs/ui/SongDetails';
+import CommentList from '@/entities/comments/ui/CommentList';
+import CommentForm from '@/entities/comments/ui/CommentForm';
 import Player from '@/shared/ui/player/Player';
+import { selectSelectedSong, selectSongsLoading, selectSongsError } from '@/shared/redux/selectors/songSelectors';
 
 const SongDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const song = songs.find((song) => song._id === id);
+  const dispatch = useAppDispatch();
+
+  const song = useAppSelector(selectSelectedSong);
+  const loading = useAppSelector(selectSongsLoading);
+  const error = useAppSelector(selectSongsError);
+
   const [comments, setComments] = useState(song?.comments || []);
+
+  useEffect(() => {
+    dispatch(fetchSongById(id));
+  }, [dispatch, id]);
 
   const handleCommentSubmit = (text: string) => {
     const newComment = {
@@ -21,6 +33,14 @@ const SongDetailPage = ({ params }: { params: { id: string } }) => {
     };
     setComments([...comments, newComment]);
   };
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography>Error: {error}</Typography>;
+  }
 
   if (!song) {
     return <Typography>Song not found</Typography>;

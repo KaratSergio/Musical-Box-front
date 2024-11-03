@@ -8,12 +8,12 @@ export const usePlayerActions = () => {
 
   return useMemo(
     () => ({
-      play: () => dispatch(play()),
-      pause: () => dispatch(pause()),
-      setActive: (song: ISong) => dispatch(setActive(song)),
-      setDuration: (duration: number) => dispatch(setDuration(duration)),
-      setCurrentTime: (time: number) => dispatch(setCurrentTime(time)),
-      setVolume: (volume: number) => dispatch(setVolume(volume)),
+      playSong: () => dispatch(play()),
+      pauseSong: () => dispatch(pause()),
+      setActiveSong: (song: ISong) => dispatch(setActive(song)),
+      setDurationSong: (duration: number) => dispatch(setDuration(duration)),
+      setCurrentTimeSong: (time: number) => dispatch(setCurrentTime(time)),
+      setVolumeSong: (volume: number) => dispatch(setVolume(volume)),
     }),
     [dispatch]
   );
