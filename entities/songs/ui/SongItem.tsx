@@ -8,14 +8,12 @@ import { selectAllPlayer } from '@/shared/redux/selectors/playerSelectors';
 
 interface SongItemProps {
   song: ISong;
-  active?: boolean;
-  play: () => void;
 }
 
-const SongItem: React.FC<SongItemProps> = ({ song, active = false, play }) => {
+const SongItem: React.FC<SongItemProps> = ({ song }) => {
   const router = useRouter();
-  const { pauseSong, setActiveSong } = usePlayerActions();
-  const { isPaused } = useAppSelector(selectAllPlayer);
+  const { pauseSong, playSong, setActiveSong } = usePlayerActions();
+  const { isPaused, activeSong } = useAppSelector(selectAllPlayer);
 
   const handleCardClick = () => {
     router.push(`/songs/${song._id}`);
@@ -23,25 +21,31 @@ const SongItem: React.FC<SongItemProps> = ({ song, active = false, play }) => {
 
   const togglePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (active) {
+    if (activeSong?._id === song._id) {
       if (isPaused) {
-        play();
+        playSong();
       } else {
         pauseSong();
       }
     } else {
       setActiveSong(song);
-      play();
+      playSong();
     }
   };
 
   return (
-    <Card onClick={handleCardClick} sx={{ display: 'flex', alignItems: 'center', mb: 2, cursor: 'pointer' }}>
-      <IconButton onClick={togglePlay}>{!active || isPaused ? <PlayArrow /> : <Pause />}</IconButton>
+    <Card onClick={handleCardClick} className="flex cursor-pointer w-[660px] hover:bg-slate-100">
+      <IconButton sx={{ '&:hover': { backgroundColor: 'transparent' } }} onClick={togglePlay}>
+        {activeSong?._id !== song._id || isPaused ? (
+          <PlayArrow sx={{ fontSize: '80px' }} />
+        ) : (
+          <Pause sx={{ fontSize: '80px' }} />
+        )}
+      </IconButton>
 
-      <CardMedia component="img" sx={{ width: 151 }} image={song.picture} alt={song.title} />
+      <CardMedia component="img" className="w-full max-w-36" image={song.picture} alt={song.title} />
 
-      <CardContent sx={{ flex: '1 0 auto' }}>
+      <CardContent className="flex-1">
         <Typography component="div" variant="h5">
           {song.title}
         </Typography>
@@ -57,12 +61,12 @@ const SongItem: React.FC<SongItemProps> = ({ song, active = false, play }) => {
       </CardContent>
 
       <IconButton
+        sx={{ width: 100, padding: 2, '&:hover': { backgroundColor: 'transparent' } }}
         onClick={(e) => {
           e.stopPropagation();
         }}
-        sx={{ marginLeft: 'auto' }}
       >
-        <Delete />
+        <Delete sx={{ fontSize: '40px' }} />
       </IconButton>
     </Card>
   );

@@ -52,7 +52,7 @@ const SongDetailPage = ({ params }: { params: { id: string } }) => {
         <SongDetails song={song} />
         <CommentList comments={comments} />
         <CommentForm onCommentSubmit={handleCommentSubmit} />
-        <Player song={song} />
+        <Player />
       </Box>
     </div>
   );

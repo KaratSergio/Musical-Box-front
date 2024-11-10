@@ -4,17 +4,12 @@ import { Pause, PlayArrow, VolumeDownRounded, VolumeUp, VolumeOff } from '@mui/i
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { usePlayerActions } from '@/hooks/usePlayerActions';
 import { selectAllPlayer } from '@/shared/redux/selectors/playerSelectors';
-import { ISong } from '@/entities/songs/model/types';
 import SongProgress from './SongProgress';
-
-interface PlayerProps {
-  song: ISong;
-}
 
 let audio: HTMLAudioElement | null = null;
 
-const Player: React.FC<PlayerProps> = ({ song }) => {
-  const { isPaused, volume, currentTime, duration } = useAppSelector(selectAllPlayer);
+const Player: React.FC = () => {
+  const { isPaused, volume, currentTime, duration, activeSong } = useAppSelector(selectAllPlayer);
   const { playSong, pauseSong, setVolumeSong, setCurrentTimeSong, setDurationSong } = usePlayerActions();
 
   const initializeAudio = useCallback(() => {
@@ -30,13 +25,16 @@ const Player: React.FC<PlayerProps> = ({ song }) => {
   }, [volume, setDurationSong, setCurrentTimeSong]);
 
   useEffect(() => {
-    if (!audio) {
-      audio = new Audio(song.audio);
+    if (activeSong && (!audio || audio.src !== activeSong.audio)) {
+      if (audio) {
+        audio.pause();
+      }
+      audio = new Audio(activeSong.audio);
       initializeAudio();
-    } else {
-      audio.volume = volume / 100;
+      playSong();
+      audio.play();
     }
-  }, [song.audio, volume, initializeAudio]);
+  }, [activeSong, initializeAudio, playSong]);
 
   const togglePlay = () => {
     if (isPaused) {
@@ -51,6 +49,10 @@ const Player: React.FC<PlayerProps> = ({ song }) => {
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => setVolumeSong(Number(e.target.value));
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => setCurrentTimeSong(Number(e.target.value));
 
+  if (!activeSong) {
+    return null;
+  }
+
   return (
     <div className="flex fixed bottom-0 items-center p-4 h-16 w-full bg-gray-400">
       <IconButton onClick={togglePlay} className="text-white mr-2">
@@ -58,10 +60,10 @@ const Player: React.FC<PlayerProps> = ({ song }) => {
       </IconButton>
       <CardContent className="flex flex-col">
         <Typography component="div" variant="h5" className="text-lg font-semibold">
-          {song.title}
+          {activeSong.title}
         </Typography>
         <Typography variant="subtitle1" className="text-gray-200 text-sm">
-          {song.artist}
+          {activeSong.artist}
         </Typography>
       </CardContent>
       <div className="flex-grow px-4">
