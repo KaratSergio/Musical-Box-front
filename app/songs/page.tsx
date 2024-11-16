@@ -3,10 +3,10 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { fetchAllSongs } from '@/shared/lib/songThunks';
-import { selectSongs, selectSongsError } from '@/shared/redux/selectors/songSelectors';
+import { fetchAllSongs } from '@/entities/songs/model/songThunks';
+import { selectSongs, selectSongsError } from '@/entities/songs/model/songSelectors';
 import SongList from '@/entities/songs/ui/SongList';
-import Player from '@/shared/ui/player/Player';
+import Player from '@/features/player/ui/Player';
 import { Typography } from '@mui/material';
 
 const SongsPage = () => {

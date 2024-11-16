@@ -1,4 +1,4 @@
-import { RootState } from '../reducers/index';
+import { RootState } from '../../../app/store/rootReducer';
 
 export const selectSongs = (state: RootState) => state.songs.songs;
 

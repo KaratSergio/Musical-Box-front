@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useAppDispatch } from './useAppDispatch';
 import { ISong } from '@/entities/songs/model/types';
-import { play, pause, setActive, setDuration, setCurrentTime, setVolume } from '../shared/redux/reducers/playerReducer';
+import { play, pause, setActive, setDuration, setCurrentTime, setVolume } from '../features/player/model/playerSlice';
 
 export const usePlayerActions = () => {
   const dispatch = useAppDispatch();

@@ -3,7 +3,7 @@ import { IconButton, CardContent, Typography } from '@mui/material';
 import { Pause, PlayArrow, VolumeDownRounded, VolumeUp, VolumeOff } from '@mui/icons-material';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { usePlayerActions } from '@/hooks/usePlayerActions';
-import { selectAllPlayer } from '@/shared/redux/selectors/playerSelectors';
+import { selectAllPlayer } from '@/features/player/model/playerSelectors';
 import SongProgress from './SongProgress';
 
 let audio: HTMLAudioElement | null = null;

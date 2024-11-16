@@ -4,12 +4,12 @@ import { Typography, Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { fetchSongById } from '@/shared/lib/songThunks';
+import { fetchSongById } from '@/entities/songs/model/songThunks';
 import SongDetails from '@/entities/songs/ui/SongDetails';
 import CommentList from '@/entities/comments/ui/CommentList';
 import CommentForm from '@/entities/comments/ui/CommentForm';
-import Player from '@/shared/ui/player/Player';
-import { selectSelectedSong, selectSongsLoading, selectSongsError } from '@/shared/redux/selectors/songSelectors';
+import Player from '@/features/player/ui/Player';
+import { selectSelectedSong, selectSongsLoading, selectSongsError } from '@/entities/songs/model/songSelectors';
 
 const SongDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;

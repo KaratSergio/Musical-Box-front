@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { RootState } from '../reducers/index';
+import { RootState } from '../../../app/store/rootReducer';
 
 export const selectActiveSong = (state: RootState) => state.player.active;
 export const selectIsPaused = (state: RootState) => state.player.pause;

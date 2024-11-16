@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import playerReducer from './playerReducer';
-import songReducer from './songReducer';
+import playerReducer from '@/features/player/model/playerSlice';
+import songReducer from '@/entities/songs/model/songSlice';
 
 const rootReducer = combineReducers({
   player: playerReducer,

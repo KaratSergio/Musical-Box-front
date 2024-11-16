@@ -4,7 +4,7 @@ import './globals.css';
 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import Navbar from '../shared/ui/Navbar';
-import ReduxProvider from '../shared/redux/ReduxProvider';
+import ReduxProvider from '../app/store/ReduxProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

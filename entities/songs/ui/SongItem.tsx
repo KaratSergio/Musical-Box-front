@@ -4,7 +4,7 @@ import { Delete, Pause, PlayArrow } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { usePlayerActions } from '@/hooks/usePlayerActions';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { selectAllPlayer } from '@/shared/redux/selectors/playerSelectors';
+import { selectAllPlayer } from '@/features/player/model/playerSelectors';
 
 interface SongItemProps {
   song: ISong;
